@@ -23,7 +23,7 @@ function askWord() {
   console.log(userWordArray);
 
   //Make an array out of the userWordArray where all of the characters are replaced by _ except for blank spaces
-  // guessingArray = [];
+  guessingArray = [];
   for (i = 0; i < userWordArray.length; i++) {
     guessingArray.push("_");
   }
@@ -33,7 +33,6 @@ function askWord() {
 
 // asking the user to input a letter they want to guess
 function askLetter() {
-  alert(guessingArray.join(" "));
   guess = prompt(
     "What letter are you guessing? \n \nThese are your currently wrongly guessed letters:\n" +
       wronglyGuessedLetters.join(" ") +
@@ -94,7 +93,13 @@ function runGame() {
       }
     }
     if (lives === 0) {
-      if (confirm("Oh no, you lose!\nWould you like to play again?") === true) {
+      if (
+        confirm(
+          "Oh no, you lose!\nThis was the word\n" +
+            userWordArray.join("") +
+            "\n\nWould you like to play again?"
+        ) === true
+      ) {
         restartGame();
       } else {
         break;
