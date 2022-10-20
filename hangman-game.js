@@ -27,8 +27,10 @@ function askWord() {
   for (i = 0; i < userWordArray.length; i++) {
     guessingArray.push("_");
   }
-  replaceItem(space);
   console.log(guessingArray);
+  if (userWordArray.includes(" ")) {
+    replaceItem(space);
+  }
 }
 
 // asking the user to input a letter they want to guess
@@ -84,8 +86,11 @@ function runGame() {
     console.log(userWordArray);
     if (guessingArray.join("") === userWordArray.join("")) {
       if (
-        confirm("Congratulations, you win!\nWould you like to play again?") ===
-        true
+        confirm(
+          "Congratulations, you win!\nThis was the word:\n" +
+            userWordArray.join("") +
+            "\n\nWould you like to play again?"
+        ) === true
       ) {
         restartGame();
       } else {
@@ -95,7 +100,7 @@ function runGame() {
     if (lives === 0) {
       if (
         confirm(
-          "Oh no, you lose!\nThis was the word\n" +
+          "Oh no, you lose!\nThis was the word:\n" +
             userWordArray.join("") +
             "\n\nWould you like to play again?"
         ) === true
