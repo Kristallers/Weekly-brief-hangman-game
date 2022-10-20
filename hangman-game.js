@@ -2,6 +2,7 @@ let userWord = "";
 let userGuess = "";
 let wronglyGuessedLetters = [];
 let guess = "";
+const space = " ";
 let lives = 10;
 let indices = [];
 let guessingArray = [];
@@ -10,10 +11,10 @@ let userWordArray = [];
 // asking the user for the word which will play the game
 function askWord() {
   userWord = prompt(
-    "What word or sentence would you like to use for this game? (1-20 characters)"
+    "What word/sentence would you like to use for this game? (1-20 characters)"
   ).toUpperCase();
   if (userWord.length >= 20 || userWord.length < 1) {
-    alert("word/sentence must be between 1-20 charachter");
+    alert("Word/sentence must be between 1-20 charachter");
     askWord();
   }
 
@@ -26,6 +27,7 @@ function askWord() {
   for (i = 0; i < userWordArray.length; i++) {
     guessingArray.push("_");
   }
+  replaceItem(space);
   console.log(guessingArray);
 }
 
@@ -46,14 +48,25 @@ function askLetter() {
 // starting the game, outside of the loop
 askWord();
 
-// replace _ with the correctly guessed letter in the guessingArray
-function replaceGuesses() {
+// find the index of an item you want to replace
+function findReplacementIndex(item) {
+  let itemIndex = userWordArray.indexOf(item);
+  while (itemIndex != -1) {
+    indices.push(itemIndex);
+    itemIndex = userWordArray.indexOf(item, itemIndex + 1);
+    console.log(indices);
+  }
+}
+
+// replace an item with another one, ex with the correctly guessed letter in the guessingArray or space
+function replaceItem(item) {
+  findReplacementIndex(item);
   for (let i = 0; i < indices.length; i++) {
     let newIndex = indices[i];
     console.log(newIndex);
-    guessingArray.splice(newIndex, 1, guess);
-    console.log(guessingArray);
+    guessingArray.splice(newIndex, 1, item);
   }
+  console.log(guessingArray);
 }
 
 //function to restart game
@@ -90,17 +103,7 @@ function runGame() {
     askLetter();
     if (userWordArray.includes(guess)) {
       indices = [];
-      let guessedLetterIndex = userWordArray.indexOf(guess);
-      while (guessedLetterIndex != -1) {
-        //get array of all the indices of the guessed letter in the userWordArray
-        indices.push(guessedLetterIndex);
-        guessedLetterIndex = userWordArray.indexOf(
-          guess,
-          guessedLetterIndex + 1
-        );
-        console.log(indices);
-      }
-      replaceGuesses();
+      replaceItem(guess);
     } else if (wronglyGuessedLetters.includes(guess)) {
       alert(
         "Wee Woo! You already guessed that word wrongly. No extra lives lost."
